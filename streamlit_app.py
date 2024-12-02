@@ -1,6 +1,7 @@
 import streamlit as st
 import json
 import os
+from datetime import datetime
 
 # File untuk menyimpan data transaksi
 DATA_FILE = "transactions.json"
@@ -33,7 +34,7 @@ amount = st.number_input("Masukkan jumlah IDR:", min_value=1, step=1)
 # Tombol untuk menambah saldo
 if st.button("Tambah Saldo"):
     data["balance"] += amount
-    data["transactions"].append({"type": "Tambah", "amount": amount, "date": st.session_state.get("current_time", st.timestamp())})
+    data["transactions"].append({"type": "Tambah", "amount": amount, "date": datetime.now().strftime("%Y-%m-%d %H:%M:%S")})
     save_data(data)
     st.success(f"Berhasil menambahkan {amount:,} IDR ke saldo Anda!")
 
@@ -43,7 +44,7 @@ if st.button("Tarik Saldo"):
         st.error("Saldo tidak mencukupi!")
     else:
         data["balance"] -= amount
-        data["transactions"].append({"type": "Tarik", "amount": amount, "date": st.session_state.get("current_time", st.timestamp())})
+        data["transactions"].append({"type": "Tarik", "amount": amount, "date": datetime.now().strftime("%Y-%m-%d %H:%M:%S")})
         save_data(data)
         st.success(f"Berhasil menarik {amount:,} IDR dari saldo Anda!")
 
